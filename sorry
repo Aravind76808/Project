@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For You — A Little Confession</title>
+  <style>
+    :root{
+      --bg1: #fff0f7;
+      --bg2: #ffe9ef;
+      --card-bg: linear-gradient(135deg, #ffffff 0%, #fff9fb 40%, #fff6f0 100%);
+      --accent: #ff6b9a;
+      --accent-2: #ff8fbf;
+      --text: #222;
+      --muted: #6b6b73;
+      --shadow: 0 10px 30px rgba(27,31,45,0.12);
+      --card-radius: 20px;
+      --ribbon-color: #ff7aa2;
+      --ribbon-dark: #e65f8b;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(circle at 20% 30%, #ffe6f2, transparent 50%),
+                  radial-gradient(circle at 80% 70%, #fff3e6, transparent 50%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      overflow:hidden;
+      position:relative;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Floating hearts animation (gentle drift) */
+    @keyframes floatHearts {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(0.6);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(40px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -10px;
+      color: #ff6b9a;
+      font-size: 22px;
+      animation: floatHearts 18s ease-in-out infinite;
+      opacity: 0.8;
+      z-index: -1;
+      filter: drop-shadow(0 2px 6px rgba(255,105,135,0.3));
+    }
+
+    .heart:nth-child(1) { left: 10%; animation-delay: 0s; font-size: 20px; }
+    .heart:nth-child(2) { left: 25%; animation-delay: 3s; font-size: 26px; }
+    .heart:nth-child(3) { left: 45%; animation-delay: 6s; font-size: 18px; }
+    .heart:nth-child(4) { left: 65%; animation-delay: 9s; font-size: 28px; }
+    .heart:nth-child(5) { left: 80%; animation-delay: 12s; font-size: 24px; }
+
+    .card-wrap{
+      max-width:700px;
+      width:100%;
+      perspective:1000px;
+      z-index: 2;
+    }
+
+    .gift-card{
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      padding: 34px 28px;
+      position: relative;
+      transform: translateZ(0);
+      transition: transform 250ms ease, box-shadow 250ms ease;
+      overflow: visible;
+      backdrop-filter: blur(8px);
+    }
+    .gift-card:hover{
+      transform: translateY(-6px) rotateX(2deg);
+      box-shadow: 0 20px 40px rgba(27,31,45,0.18);
+    }
+
+    .ribbon{
+      position:absolute;
+      left:50%;
+      top:-18px;
+      transform:translateX(-50%);
+      width:72%;
+      height:34px;
+      border-radius:12px;
+      background: linear-gradient(180deg, var(--ribbon-color), var(--ribbon-dark));
+      box-shadow: 0 6px 16px rgba(230,95,139,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-weight:700;
+      letter-spacing:0.6px;
+      font-size:14px;
+      z-index:3;
+    }
+
+    .heart-badge{
+      position:absolute;
+      right:22px;
+      top:14px;
+      font-size:28px;
+      line-height:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background: linear-gradient(135deg, rgba(255,107,154,0.16), rgba(255,143,191,0.08));
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 18px rgba(255,107,154,0.12);
+      z-index:4;
+    }
+
+    @keyframes heartPulse {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.14); }
+      100% { transform: scale(1); }
+    }
+    .heart-emoji{
+      display:inline-block;
+      animation: heartPulse 1800ms ease-in-out infinite;
+      transform-origin:center;
+      filter: drop-shadow(0 6px 12px rgba(255,107,154,0.14));
+    }
+
+    .title{
+      margin:0 0 12px 0;
+      font-size:20px;
+      color:var(--accent-dark, #c54a74);
+      font-weight:700;
+      letter-spacing:0.2px;
+      text-align:left;
+    }
+    .subtitle{
+      margin:0 0 20px 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .message{
+      color:var(--text);
+      font-size:18px;
+      line-height:1.6;
+      white-space:pre-wrap;
+    }
+
+    .note{
+      display:block;
+      margin-top:20px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    @media (max-width:560px){
+      .gift-card{ padding:22px; }
+      .heart-badge{ right:14px; top:10px; width:48px; height:48px; font-size:24px; }
+      .title{ font-size:18px; }
+      .message{ font-size:16px; }
+      .ribbon{ height:30px; font-size:13px; }
+    }
+
+    .gift-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
+      background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px);
+      background-size: 6px 6px;
+      opacity:0.08;
+      mix-blend-mode: overlay;
+    }
+  </style>
+</head>
+<body>
+  <!-- floating hearts -->
+  <div class="heart">💖</div>
+  <div class="heart">💗</div>
+  <div class="heart">💞</div>
+  <div class="heart">💓</div>
+  <div class="heart">💘</div>
+
+  <!-- card -->
+  <div class="card-wrap" role="region" aria-label="Confession gift card">
+    <article class="gift-card" aria-labelledby="card-heading">
+      <div class="ribbon" aria-hidden="true">A little note</div>
+
+      <div class="heart-badge" aria-hidden="true">
+        <span class="heart-emoji" role="img" aria-label="heart">💖</span>
+      </div>
+
+      <h1 id="card-heading" class="title">For you</h1>
+      <p class="subtitle">Something I've wanted to tell you</p>
+
+      <div class="message" id="message">
+I don’t know if I can put it into perfect words, but when I think of peace, warmth, and real happiness — you’re the first person who comes to mind. What I feel for you isn’t just a crush anymore; it’s something real, something that feels like home.
+
+I’ve wanted to tell you this for a long time, but I never had the courage. Every time I see you, my heart starts beating so fast it feels like it might explode. I honestly care about you so much, and I’d love the chance to show you how much you mean to me. 💖
+      </div>
+
+      <span class="note" aria-hidden="true">Send this as a message or screenshot it like a little digital gift ✨</span>
+    </article>
+  </div>
+</body>
+</html>
